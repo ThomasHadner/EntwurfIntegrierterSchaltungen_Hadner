@@ -1,0 +1,4 @@
+iic-vlint.sh tt_um_entwurf_integrierter_schaltungen_hadner_tb.v
+iverilog -g2005 -o EIS_HADNER tt_um_entwurf_integrierter_schaltungen_hadner_tb.v
+vvp EIS_HADNER
+gtkwave tt_um_entwurf_integrierter_schaltungen_hadner_tb.vcd

@@ -12,7 +12,7 @@ module counter_tb;
 	
 	// inputs
 	reg reset_i = 1'b1;		// reset
-	reg enable_i = 1'b0;		// enable signal
+	reg enable_i = 1'b0;	// enable signal
 	reg clock_i = 1'b0;		// clock
 	
 	// outputs
@@ -21,8 +21,11 @@ module counter_tb;
 	
 	// DUT
 	counter
-		#(MAX_COUNTER_VALUE)
-		counter_dut(
+		#(
+			MAX_COUNTER_VALUE
+		)
+		counter
+		(
 			.reset_i(reset_i),
 			.enable_i(enable_i),
 			.clock_i(clock_i),
@@ -41,12 +44,12 @@ module counter_tb;
 		
 		/* verilator lint_off STMTDLY */
 		#20 reset_i = 1'b0;		// reassert reset
-		#20 enable_i = 1'b1;		// siwtch on enable
+		#20 enable_i = 1'b1;	// siwtch on enable
 		
-		#50 enable_i = 1'b0;		// switch off enable
-		#20 enable_i = 1'b1;		// switch on enable
+		#50 enable_i = 1'b0;	// switch off enable
+		#20 enable_i = 1'b1;	// switch on enable
 		
-		#180 enable_i = 1'b0;		// switch off enable
+		#180 enable_i = 1'b0;	// switch off enable
 		
 		#50 $finish;			// finish
 		/* verilator lint_on STMTDLY */
