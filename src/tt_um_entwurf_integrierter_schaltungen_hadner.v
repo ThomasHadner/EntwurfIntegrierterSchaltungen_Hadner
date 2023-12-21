@@ -44,6 +44,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 
     // use bidirectionals as outputs
     assign uio_oe = 8'b11111111;
+    assign uio_out = 8'b11111111;
 
     // put bottom 8 bits of second counter out on the bidirectional gpio
 //    assign uio_out = second_counter[7:0];
