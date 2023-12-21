@@ -71,8 +71,8 @@ module tt_um_entwurf_integrierter_schaltungen_hadner_tb;
 		$dumpvars;
 		
 		/* verilator lint_off STMTDLY */
-		#200 rst_n = 1'b1;		// reassert reset
-		#200 ui_in[7:7] = 1'b1;	// switch on enable
+		#200 rst_n = 1'b1;			// reassert reset
+		#200 ui_in[7:7] = 1'b1;		// switch on enable
 		
 		#1000 ui_in[7:7] = 1'b0;	// switch off enable
 		#19000 ui_in[7:7] = 1'b1;	// switch on enable

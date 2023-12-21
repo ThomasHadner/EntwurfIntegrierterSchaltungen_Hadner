@@ -18,14 +18,13 @@
 // limitations under the License.
 
 `default_nettype none
-
 `include "pwm_analyzer.v"
 
 module tt_um_entwurf_integrierter_schaltungen_hadner 
 	#(
 		parameter MAX_COUNTER_VALUE = 2000,		// max value of counter
-		parameter HIGH_COUNTER_VALUE = 12,		// above this value output is HIGH
-		parameter LOW_COUNTER_VALUE = 11		// below this value output is LOW
+		parameter HIGH_COUNTER_VALUE = 1800,	// above this value output is HIGH
+		parameter LOW_COUNTER_VALUE = 1200		// below this value output is LOW
 	)
 	(
 		input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
@@ -42,7 +41,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 
     wire reset = ! rst_n;
     wire [6:0] led_out;
-    assign uo_out[6:0] = led_out;
+    assign uo_out[6:0] = 7'b0000000;
     assign uo_out[7] = 1'b0;
 
     // use bidirectionals as outputs
@@ -51,7 +50,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     // put bottom 8 bits of second counter out on the bidirectional gpio
 //    assign uio_out = second_counter[7:0];
 
-    // external clock is 10MHz
+    // external clock is configured to 1MHz
     
     pwm_analyzer
 		#(	
@@ -69,3 +68,4 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     
 
 endmodule	// tt_um_entwurf_integrierter_schaltungen_hadner
+`default_nettype wire

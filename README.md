@@ -2,4 +2,4 @@
 
 # Entwurf Integrierter Schaltungen
 
-Entwickelte Schaltung zur PWM Detektion in der KV Entwurf Integrierter Schaltungen von Hadner Thomas
+Demodulator for RC Receiver with different Outputs by Hadner Thomas
