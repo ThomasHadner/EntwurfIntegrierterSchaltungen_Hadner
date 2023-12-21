@@ -61,13 +61,6 @@ module ones_counter
 		
 	end
 	
-	// reset ones to zero
-	always @ (posedge reset_i) begin
-		
-		ones = 0;
-	
-	end
-	
 endmodule	// ones_counter
 
 `endif

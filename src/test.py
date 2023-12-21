@@ -46,5 +46,5 @@ async def test_7seg(dut):
         await ClockCycles(dut.clk, max_count)
         # assert int(dut.segments.value) == segments[i % 10]
         
-	assert True == True		# dummy assertion, so test is positive
+    assert True == True		# dummy assertion, so test is positive
 

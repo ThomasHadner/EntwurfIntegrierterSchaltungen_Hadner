@@ -56,27 +56,32 @@ module pwm_analyzer
 			.counter_val_o(counter_val)
 		);
 	
-	always @ (posedge reset_i) begin
-	
-		output_pin <= 1'b0;
-	
-	end
-	
 	// check if counter value leads to output change
-	always @ (posedge counter_finished) begin
+	always @ (negedge clock_i) begin
 	
-		if (counter_val > HIGH_COUNTER_VALUE) begin
-			
-			output_pin <= 1'b1;
+		if (reset_i == 1'b1) begin
+		
+			output_pin <= 1'b0;
 			
 		end else begin
-		
-			if (counter_val < LOW_COUNTER_VALUE) begin
-			
-				output_pin <= 1'b0;
-			
+	
+			if (counter_finished == 1'b1) begin
+	
+				if (counter_val > HIGH_COUNTER_VALUE) begin
+					
+					output_pin <= 1'b1;
+					
+				end else begin
+				
+					if (counter_val < LOW_COUNTER_VALUE) begin
+					
+						output_pin <= 1'b0;
+					
+					end
+					
+				end
 			end
-			
+	
 		end
 	
 	end

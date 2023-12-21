@@ -36,10 +36,12 @@ module counter
 	// start the module implementation
 	reg [ $clog2(MAX_COUNTER_VALUE + 1) - 1 : 0 ] counter_val;	// register to store the counter value
 	reg [ 0 : 0 ] finished;						// register to store the finished flag
-	reg [ 0 : 0 ] falling_edge_on_enable;		// register to store if the enable edge falled down
 	
 	assign counter_val_o = counter_val;			// assign the counter value to the output
 	assign finished_o = finished;				// assign the finished value to the output
+
+	integer last_enable_state = 0;
+	integer current_enable_state = 0;
 
 	// gets active always when a positive edge of the clock signal occours
 	always @ ( posedge clock_i ) begin
@@ -47,9 +49,11 @@ module counter
 		// reset is active
 		if ( reset_i == 1'b1) begin
 			finished <= 1'b0;
-			falling_edge_on_enable <= 1'b0;
 			
 			counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} };	// reset counter value
+			
+			last_enable_state <= current_enable_state;
+			current_enable_state <= 0;
 			
 		// reset is disabled
 		end else begin		
@@ -65,32 +69,14 @@ module counter
 				end
 				
 			end else begin
-				if (falling_edge_on_enable == 1'b1) begin
+				// had falling edge on enable
+				if ( (current_enable_state == 0) && (last_enable_state == 1) ) begin
 					finished <= 1'b1;	// set finished to high			
 				end
 			end
 			
 		end
 	end
-	
-	// routine for resetting on positive edge of reset
-	always @ (posedge reset_i) begin
-		counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} }; 	// reset the counter value
-		finished <= 1'b0;
-		falling_edge_on_enable <= 1'b0;		
-	end
-	
-	// reset counter on new enable
-	always @ (posedge enable_i) begin
-		finished <= 1'b0;
-		falling_edge_on_enable <= 1'b0;
-		counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} };
-	end
-	
-	// store that enable had falling edge
-	always @ (negedge enable_i) begin
-		falling_edge_on_enable <= 1'b1;
-	end		
 	
 endmodule	// counter
 
