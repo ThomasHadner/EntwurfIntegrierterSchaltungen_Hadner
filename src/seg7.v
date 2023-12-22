@@ -11,6 +11,9 @@
       -- 4 --
 */
 
+`ifndef __SEG_7__
+`define __SEG_7__
+
 module seg7 (
     input wire [3:0] counter,
     output reg [6:0] segments
@@ -41,4 +44,6 @@ module seg7 (
     end
 
 endmodule
+
+`endif
 

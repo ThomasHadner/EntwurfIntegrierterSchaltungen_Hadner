@@ -3,7 +3,7 @@
 // Demodulator for RC Receiver with different Outputs
 //
 //
-// Copyright 2024 Thomas Hadner
+// Copyright 2023 Thomas Hadner
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,20 @@
 
 `default_nettype none
 `include "pwm_analyzer.v"
+`include "ones_counter.v"
+`include "seg7.v"
+
+`ifndef __KEIS_HADNER__
+`define __KEIS_HADNER__
+
 
 module tt_um_entwurf_integrierter_schaltungen_hadner 
 	#(
 		parameter MAX_COUNTER_VALUE = 2000,		// max value of counter
 		parameter HIGH_COUNTER_VALUE = 1800,	// above this value output is HIGH
-		parameter LOW_COUNTER_VALUE = 1200		// below this value output is LOW
+		parameter LOW_COUNTER_VALUE = 1200,		// below this value output is LOW
+		
+		parameter INPUT_FEATURES = 8			// number of input features for the ones_counter
 	)
 	(
 		input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
@@ -40,14 +48,14 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 	);
 
     wire reset = ! rst_n;
-    assign uo_out[6:0] = 7'b0000000;
+    wire [ $clog2(INPUT_FEATURES + 1) - 1 : 0 ] ones_counter_o;
+    wire [6:0] led_out;
+    
+    assign uo_out[6:0] = led_out;	// for the 7 seg
+    assign uo_out[7] = 1'b0;
 
     // use bidirectionals as outputs
     assign uio_oe = 8'b11111111;
-    assign uio_out = 8'b11111111;
-
-    // put bottom 8 bits of second counter out on the bidirectional gpio
-//    assign uio_out = second_counter[7:0];
 
     // external clock is configured to 1MHz
     
@@ -57,14 +65,138 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 			HIGH_COUNTER_VALUE,
 			LOW_COUNTER_VALUE
 		)
-		pwm_analyzer
+		pwm_analyzer_0
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[0]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[0])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_1
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[1]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[1])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_2
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[2]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[2])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_3
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[3]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[3])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_4
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[4]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[4])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_5
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[5]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[5])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_6
+		(
+			.reset_i(reset),
+			.enable_i(ui_in[6]),
+			.clock_i(clk),
+			.output_pin_o(uio_out[6])
+		);
+		
+	pwm_analyzer
+		#(	
+			MAX_COUNTER_VALUE,
+			HIGH_COUNTER_VALUE,
+			LOW_COUNTER_VALUE
+		)
+		pwm_analyzer_7
 		(
 			.reset_i(reset),
 			.enable_i(ui_in[7]),
 			.clock_i(clk),
-			.output_pin_o(uo_out[7])
+			.output_pin_o(uio_out[7])
 		);
-    
+	
+	// include the ones_counter
+	ones_counter
+		#(
+			INPUT_FEATURES
+		)
+		ones_counter
+		(
+			.reset_i(reset),
+			.clock_i(clk),
+			.input_features_i(uio_out),			// outputs of the PWM_Analyzers
+			
+			.ones_o(ones_counter_o)
+		);
+	
+	// 7 segment shows counter which shows how many outputs are HIGH
+	seg7
+		#(
+		)
+		seg7
+		(
+			.counter(ones_counter_o),
+			.segments(led_out)
+		);
+		
 
 endmodule	// tt_um_entwurf_integrierter_schaltungen_hadner
+
+`endif
 `default_nettype wire
