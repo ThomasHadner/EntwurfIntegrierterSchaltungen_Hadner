@@ -44,7 +44,7 @@ module tb;
     		HIGH_COUNTER_VALUE,
     		LOW_COUNTER_VALUE
     	)
-    	tt_um_entwurf_integrierter_schaltungen_hadner
+    	tt_um_entwurf_integrierter_schaltungen_hadner_1
     	( 
 			// include power ports for the Gate Level test
 			`ifdef GL_TEST
