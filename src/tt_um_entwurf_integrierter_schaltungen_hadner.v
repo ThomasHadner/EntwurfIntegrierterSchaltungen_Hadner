@@ -25,7 +25,6 @@
 `ifndef __KEIS_HADNER__
 `define __KEIS_HADNER__
 
-
 module tt_um_entwurf_integrierter_schaltungen_hadner 
 	#(
 		parameter MAX_COUNTER_VALUE = 2000,		// max value of counter
