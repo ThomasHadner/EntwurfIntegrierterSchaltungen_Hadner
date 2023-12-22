@@ -40,7 +40,7 @@ module pwm_analyzer_tb;
 			HIGH_COUNTER_VALUE,
 			LOW_COUNTER_VALUE
 		)
-		pwm_analyzer
+		pwm_analyzer_1
 		(
 			.reset_i(reset_i),
 			.enable_i(enable_i),

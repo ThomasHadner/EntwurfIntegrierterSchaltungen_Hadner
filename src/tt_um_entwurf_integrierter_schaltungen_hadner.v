@@ -176,7 +176,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 		#(
 			INPUT_FEATURES
 		)
-		ones_counter
+		ones_counter_1
 		(
 			.reset_i(reset),
 			.clock_i(clk),
@@ -189,7 +189,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 	seg7
 		#(
 		)
-		seg7
+		seg7_1
 		(
 			.counter(ones_counter_o),
 			.segments(led_out)

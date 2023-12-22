@@ -35,7 +35,7 @@ module ones_counter_tb;
 		#(
 			INPUT_FEATURES
 		)
-		ones_counter
+		ones_counter_1
 		(
 			.reset_i(reset_i),
 			.clock_i(clock_i),

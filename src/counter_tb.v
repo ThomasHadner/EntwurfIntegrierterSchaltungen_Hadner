@@ -38,7 +38,7 @@ module counter_tb;
 		#(
 			MAX_COUNTER_VALUE
 		)
-		counter
+		counter_1
 		(
 			.reset_i(reset_i),
 			.enable_i(enable_i),
