@@ -49,15 +49,15 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     wire reset = ! rst_n;
     wire [ $clog2(INPUT_FEATURES + 1) - 1 : 0 ] ones_counter_o;
     wire [6:0] led_out;
-    
-    assign uo_out[6:0] = led_out;	// for the 7 seg
-    assign uo_out[7] = 1'b0;
+    wire uart_transmit;
 
     // use bidirectionals as outputs
     assign uio_oe = 8'b11111111;
+    
+    assign uo_out[6:0] = led_out;		// for the 7 seg
+    assign uo_out[7] = uart_transmit;	// for UART transmission
 
     // external clock is configured to 1MHz
-    
     pwm_analyzer
 		#(	
 			MAX_COUNTER_VALUE,
@@ -180,7 +180,6 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 			.reset_i(reset),
 			.clock_i(clk),
 			.input_features_i(uio_out),			// outputs of the PWM_Analyzers
-			
 			.ones_o(ones_counter_o)
 		);
 	

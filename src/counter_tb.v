@@ -70,14 +70,4 @@ module counter_tb;
 	end
 
 endmodule	// counter_tb
-
-
-
-
-
-
-
-
-
-
-
+S

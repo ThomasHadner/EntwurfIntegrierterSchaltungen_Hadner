@@ -29,7 +29,7 @@ module counter
 		input wire enable_i,		// enable signal
 		input wire clock_i,			// clock
 				
-		output wire finished_o,		// signal which shows finish of counting
+		output wire finished_o,			// signal which shows finish of counting
 		output wire [ $clog2(MAX_COUNTER_VALUE + 1) - 1 : 0 ] counter_val_o		// counter value
 	);
 	
@@ -64,14 +64,14 @@ module counter
 					counter_val <= counter_val + { { ($clog2(MAX_COUNTER_VALUE + 1) - 1) {1'b0} } , 1'b1 };
 				end else begin 
 					if ( counter_val == MAX_COUNTER_VALUE ) begin
-						finished <= 1'b1;		// set finished to high
+						finished <= 1'b1;	// set finished to high
 					end
 				end
 				
 			end else begin
 				// had falling edge on enable
 				if ( (current_enable_state == 0) && (last_enable_state == 1) ) begin
-					finished <= 1'b1;	// set finished to high			
+					finished <= 1'b1;		// set finished to high			
 				end
 			end
 			
