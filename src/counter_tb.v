@@ -22,7 +22,7 @@
 
 module counter_tb;
 
-	parameter MAX_COUNTER_VALUE = 160;
+	parameter MAX_COUNTER_VALUE = 10;
 	
 	// inputs
 	reg reset_i = 1'b1;		// reset
@@ -70,4 +70,4 @@ module counter_tb;
 	end
 
 endmodule	// counter_tb
-S
+

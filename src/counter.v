@@ -46,13 +46,16 @@ module counter
 	// gets active always when a positive edge of the clock signal occours
 	always @ ( posedge clock_i ) begin
 	
+		last_enable_state = current_enable_state;	// save old enable state
+		current_enable_state <= { { 31 {1'b0} } , enable_i };			// assign enable
+	
 		// reset is active
 		if ( reset_i == 1'b1) begin
 			finished <= 1'b0;
 			
 			counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} };	// reset counter value
 			
-			last_enable_state <= current_enable_state;
+			last_enable_state <= 0;
 			current_enable_state <= 0;
 			
 		// reset is disabled
@@ -60,6 +63,11 @@ module counter
 		
 			// increment the counter value by 1 if enable is active
 			if ( enable_i == 1'b1 ) begin
+				// had rising edge on enable
+				if ( last_enable_state == 0) begin
+					finished <= 1'b0;
+				end
+				
 				if ( counter_val < MAX_COUNTER_VALUE ) begin
 					counter_val <= counter_val + { { ($clog2(MAX_COUNTER_VALUE + 1) - 1) {1'b0} } , 1'b1 };
 				end else begin 
@@ -70,7 +78,7 @@ module counter
 				
 			end else begin
 				// had falling edge on enable
-				if ( (current_enable_state == 0) && (last_enable_state == 1) ) begin
+				if ( last_enable_state == 1 ) begin
 					finished <= 1'b1;		// set finished to high			
 				end
 			end
