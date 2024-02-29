@@ -49,7 +49,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     wire reset = ! rst_n;
     wire [ $clog2(INPUT_FEATURES + 1) - 1 : 0 ] ones_counter_o;
     wire [6:0] led_out;
-    wire uart_transmit;
+    //wire uart_transmit;
     
     assign uo_out[6:0] = led_out;		// for the 7 seg
     assign uo_out[7] = 1'b0;	// for UART transmission

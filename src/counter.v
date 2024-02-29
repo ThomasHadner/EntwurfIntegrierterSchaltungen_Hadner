@@ -47,7 +47,7 @@ module counter
 	always @ ( posedge clock_i ) begin
 	
 		last_enable_state = current_enable_state;	// save old enable state
-		current_enable_state <= { { 31 {1'b0} } , enable_i };			// assign enable
+		current_enable_state = { { 31 {1'b0} } , enable_i };			// assign enable
 	
 		// reset is active
 		if ( reset_i == 1'b1) begin
@@ -55,8 +55,8 @@ module counter
 			
 			counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} };	// reset counter value
 			
-			last_enable_state <= 0;
-			current_enable_state <= 0;
+			last_enable_state = 0;
+			current_enable_state = 0;
 			
 		// reset is disabled
 		end else begin		
