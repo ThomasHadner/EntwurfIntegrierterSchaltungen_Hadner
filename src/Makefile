@@ -9,7 +9,7 @@ TOPLEVEL_LANG ?= verilog
 ifneq ($(GATES),yes)
 
 # this is the only part you should need to modify:
-VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/tt_um_entwurf_integrierter_schaltungen_hadner.v $(PWD)/counter.v $(PWD)/pwm_analyzer.v $(PWD)/ones_counter.v $(PWD)/seg7.v $(PWD)/uart_transmitter.v 
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/tt_um_entwurf_integrierter_schaltungen_hadner.v $(PWD)/counter.v $(PWD)/pwm_analyzer.v $(PWD)/ones_counter.v $(PWD)/uart_transmitter.v $(PWD)/seg7.v 
 
 else
 
