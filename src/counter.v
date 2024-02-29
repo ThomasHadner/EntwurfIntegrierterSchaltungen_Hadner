@@ -66,13 +66,16 @@ module counter
 				// had rising edge on enable
 				if ( last_enable_state == 0) begin
 					finished <= 1'b0;
-				end
+					counter_val <= { $clog2(MAX_COUNTER_VALUE + 1) {1'b0} };	// reset counter value
+				end else begin
 				
-				if ( counter_val < MAX_COUNTER_VALUE ) begin
-					counter_val <= counter_val + { { ($clog2(MAX_COUNTER_VALUE + 1) - 1) {1'b0} } , 1'b1 };
-				end else begin 
-					if ( counter_val == MAX_COUNTER_VALUE ) begin
-						finished <= 1'b1;	// set finished to high
+					// increment counter if smaller MAX_COUNTER_VALUE, else finished
+					if ( counter_val < MAX_COUNTER_VALUE ) begin
+						counter_val <= counter_val + { { ($clog2(MAX_COUNTER_VALUE + 1) - 1) {1'b0} } , 1'b1 };
+					end else begin 
+						if ( counter_val == MAX_COUNTER_VALUE ) begin
+							finished <= 1'b1;	// set finished to high
+						end
 					end
 				end
 				
@@ -82,7 +85,6 @@ module counter
 					finished <= 1'b1;		// set finished to high			
 				end
 			end
-			
 		end
 	end
 	

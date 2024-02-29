@@ -25,8 +25,8 @@
 module pwm_analyzer
 	#( 
 		parameter MAX_COUNTER_VALUE = 2000,		// max value of counter
-		parameter HIGH_COUNTER_VALUE = 1750,	// above this value output is HIGH
-		parameter LOW_COUNTER_VALUE = 1250		// below this value output is LOW
+		parameter HIGH_COUNTER_VALUE = 1900,	// above this value output is HIGH
+		parameter LOW_COUNTER_VALUE = 1100		// below this value output is LOW
 	)
 	(
 		input wire reset_i,			// reset
@@ -60,44 +60,27 @@ module pwm_analyzer
 	always @ (negedge clock_i) begin
 	
 		if (reset_i == 1'b1) begin
-		
 			output_pin <= 1'b0;
 			
 		end else begin
 	
 			if (counter_finished == 1'b1) begin
 	
-				if (counter_val > HIGH_COUNTER_VALUE) begin
-					
+				// threshold detection - HIGH
+				if (counter_val >= HIGH_COUNTER_VALUE) begin
 					output_pin <= 1'b1;
-					
-				end else begin
 				
-					if (counter_val < LOW_COUNTER_VALUE) begin
-					
+				// threshold detection - LOW
+				end else begin
+					if (counter_val <= LOW_COUNTER_VALUE) begin
 						output_pin <= 1'b0;
-					
 					end
-					
 				end
 			end
-	
 		end
-	
 	end
-	
 	
 endmodule	// pwm_analyzer
 
 `endif
 `default_nettype wire
-
-
-
-
-
-
-
-
-
-

@@ -16,15 +16,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-`timescale 1ns / 1ns
+`timescale 1us / 100ns
 
 `include "pwm_analyzer.v"
 
 module pwm_analyzer_tb;
 
 	parameter MAX_COUNTER_VALUE = 2000;		// max value of counter
-	parameter HIGH_COUNTER_VALUE = 12;		// above this value output is HIGH
-	parameter LOW_COUNTER_VALUE = 11;		// below this value output is LOW
+	parameter HIGH_COUNTER_VALUE = 1900;	// above this value output is HIGH
+	parameter LOW_COUNTER_VALUE = 1100;		// below this value output is LOW
 	
 	// inputs
 	reg reset_i = 1'b1;		// reset
@@ -47,10 +47,10 @@ module pwm_analyzer_tb;
 			.clock_i(clock_i),
 			.output_pin_o(output_pin_o)
 		);
-		
+			
 	// generate clock
 	/* verilator lint_off STMTDLY */
-	always #500 clock_i = ~clock_i;
+	always #0.5 clock_i = ~clock_i;
 	/* verilator lint_on STMTDLY */
 	
 	initial begin
@@ -61,10 +61,33 @@ module pwm_analyzer_tb;
 		#200 reset_i = 1'b0;	// reassert reset
 		#200 enable_i = 1'b1;	// switch on enable
 		
-		#100 enable_i = 1'b0;	// switch off enable
-		#190 enable_i = 1'b1;	// switch on enable
+		// now simulate RC receiver signal
 		
-		#200 enable_i = 1'b0;	// switch off enable
+		// output must be HIGH
+		#2000 enable_i = 1'b0;	// switch off enable
+		#18000 enable_i = 1'b1;	// switch on enable
+		
+		// output must be LOW
+		#1000 enable_i = 1'b0;	// switch off enable
+		#19000 enable_i = 1'b1;	// switch on enable
+		
+		// output must be HIGH
+		#1950 enable_i = 1'b0;	// switch off enable
+		#18050 enable_i = 1'b1;	// switch on enable
+		
+		// output must be HIGH (same state as before)
+		#1400 enable_i = 1'b0;	// switch off enable
+		#18600 enable_i = 1'b1;	// switch on enable
+		
+		// output must be LOW
+		#1050 enable_i = 1'b0;	// switch off enable
+		#18950 enable_i = 1'b1;	// switch on enable
+		
+		// output must be LOW (same state as before)
+		#1500 enable_i = 1'b0;	// switch off enable
+		#18500 enable_i = 1'b1;	// switch on enable
+		
+		#2000 enable_i = 1'b0;	// switch off enable
 		
 		#50 $finish;			// finish
 		/* verilator lint_on STMTDLY */
