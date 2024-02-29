@@ -52,7 +52,7 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     wire uart_transmit;
     
     assign uo_out[6:0] = led_out;		// for the 7 seg
-    assign uo_out[7] = uart_transmit;	// for UART transmission
+    assign uo_out[7] = 1'b0;	// for UART transmission
 
 	// use bidirectionals as outputs
     assign uio_oe = 8'b11111111; 		// each channel is assigned to a pwm analyzer output

@@ -71,15 +71,23 @@ module tb;
 		$dumpvars;
 		
 		/* verilator lint_off STMTDLY */
+		#10 ui_in[7:0] = 8'b00000000;	// reset all inputs
+		
 		#200 rst_n = 1'b1;			// reassert reset
 		#200 ui_in[7:7] = 1'b1;		// switch on enable
 		
-		#1000 ui_in[7:7] = 1'b0;	// switch off enable
-		#19000 ui_in[7:7] = 1'b1;	// switch on enable
-		
 		#2000 ui_in[7:7] = 1'b0;	// switch off enable
+		#18000 ui_in[7:5] = 3'b111;	// switch on enable
 		
-		#50 $finish;			// finish
+		#2000 ui_in[7:5] = 3'b000;	// switch off enable
+		#18000 ui_in[7:0] = 8'b11111111;	// switch on enable
+		
+		#2000 ui_in[7:0] = 8'b00000000;		// switch off enable
+		#18000 ui_in[5:3] = 3'b111;	// switch on enable
+		
+		#2000 ui_in[5:3] = 3'b000;	// switch off enable
+		
+		#2000 $finish;			// finish
 		/* verilator lint_on STMTDLY */
 	end
 
