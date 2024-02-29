@@ -33,32 +33,33 @@ module ones_counter
 	);
 	
 	integer i;					// variable for the for loop
+	integer count;				// counter variable loop
 	
 	reg [ $clog2(INPUT_FEATURES + 1) - 1 : 0 ] ones;
 	
 	assign ones_o = ones;
 	
-	always @ (negedge clock_i) begin
+	always @ (posedge clock_i) begin
 
 		// check for reset
 		if ( reset_i == 1'b1 ) begin
 		
-			ones <= 0;
+			ones <= { $clog2(INPUT_FEATURES + 1) {1'b0} };
 		
 		end else begin
 		
 			// initialize count variable
-			ones <= 0;
+			count = 0;
 			
 			// go through all input features
 			for ( i = 0; i < INPUT_FEATURES; i = i + 1)   	
 			
 				if(input_features_i[i] == 1'b1)  begin  	// check if the bit is '1'
-					ones <= ones + 1;    					// if its one, increment the count
+					count = count + 1;    					// if it's one, increment the count
 				end
 				
+			ones <= { { 32 - $clog2(INPUT_FEATURES + 1) {1'b0} } , {$clog2(INPUT_FEATURES + 1) {1'b1} } } &  count;
 		end
-		
 	end
 	
 endmodule	// ones_counter
