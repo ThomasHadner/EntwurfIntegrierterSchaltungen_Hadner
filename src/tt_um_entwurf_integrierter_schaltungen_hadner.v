@@ -21,6 +21,7 @@
 `include "pwm_analyzer.v"
 `include "ones_counter.v"
 `include "seg7.v"
+`include "uart_transmitter.v"
 
 `ifndef __KEIS_HADNER__
 `define __KEIS_HADNER__
@@ -49,10 +50,10 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
     wire reset = ! rst_n;
     wire [ $clog2(INPUT_FEATURES + 1) - 1 : 0 ] ones_counter_o;
     wire [6:0] led_out;
-    //wire uart_transmit;
+    wire uart_transmit;
     
     assign uo_out[6:0] = led_out;		// for the 7 seg
-    assign uo_out[7] = 1'b0;	// for UART transmission
+    assign uo_out[7] = uart_transmit;	// for UART transmission
 
 	// use bidirectionals as outputs
     assign uio_oe = 8'b11111111; 		// each channel is assigned to a pwm analyzer output
@@ -193,7 +194,19 @@ module tt_um_entwurf_integrierter_schaltungen_hadner
 			.segments(led_out)
 		);
 		
-
+	// uart transmitter which sends the counter value
+	uart_transmitter
+		#(
+			INPUT_FEATURES
+		)
+		uart_transmitter_1
+		(
+			.reset_i(reset),
+			.clock_i(clk),
+			.counter_i(ones_counter_o),
+			.uart_transmit_o(uart_transmit)
+		);
+		
 endmodule	// tt_um_entwurf_integrierter_schaltungen_hadner
 
 `endif
